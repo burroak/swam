@@ -1,0 +1,18 @@
+{
+  "name": "swam",
+  "version": "0.1.0",
+  "description": "A module to allow simple Windows Azure Mobile Services access via node.js",
+  "main": "swam.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "WAMS",
+    "Windows",
+    "Azure",
+    "Mobile",
+    "Services"
+  ],
+  "author": "Cam Stevenson",
+  "license": "MIT"
+}
