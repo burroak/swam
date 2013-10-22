@@ -1,10 +1,23 @@
+/*!
+ *
+ * Copyright 2013 Burr Oak Software under the terms of the MIT
+ * license found at http://github.com/burroak/swam/raw/master/LICENSE
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 exports._Q = require("q");
 exports._HTTP = require("q-io/http");
 exports._BUFFERSTREAM = require("q-io/buffer-stream");
 
 /**
  * HTTP statuses we expect to see from WAMS.
- * 
+ *
  * @type {{OK: number, CREATED: number, NOCONTENT: number}}
  */
 exports.HttpStatus = {
@@ -24,7 +37,7 @@ exports.HttpStatus = {
  * @param masterKey The service master key.
  */
 exports.initialize = function(url, appKey, authKey, masterKey) {
-    exports._serviceUrl = url;
+    exports._serviceUrl = url + "/tables/";
     exports._appKey = appKey;
     exports._authKey = authKey;
     exports._masterKey = masterKey;
@@ -35,17 +48,26 @@ exports.initialize = function(url, appKey, authKey, masterKey) {
  *
  * @param table The table name.
  * @param filter An optional query filter (See http://www.odata.org/documentation/uri-conventions/#SystemQueryOptions)
+ * @param select The columns to return.
+ * @param orderby Orders the returned items by one or more columns.
  * @param skip The number of records to skip (or 0)
  * @param top The number of records to retrieve, or null for all.
  * @param includeCount If true, include the total count of records for the query.
  * @returns {*}
- * TODO: orderby, select
  */
-exports.getRecords = function (table, filter, skip, top, includeCount) {
+exports.getRecords = function (table, filter, select, orderby, skip, top, includeCount) {
     var url = exports._serviceUrl + table;
 
     if (filter !== null && filter !== undefined) {
         url = exports._addQueryParam(url, "$filter", filter);
+    }
+
+    if (select !== null && select !== undefined) {
+        url = exports._addQueryParam(url, "$select", select);
+    }
+
+    if (orderby !== null && orderby !== undefined) {
+        url = exports._addQueryParam(url, "orderby", orderby);
     }
 
     if (skip !== null && skip !== undefined) {
@@ -139,9 +161,9 @@ exports.insertRecord = function (table, value) {
 
                     return {
                         success: success,
-                        id: recordId,
                         status: value.status,
-                        error: error
+                        error: error,
+                        id: recordId
                     };
                 });
             });
@@ -186,9 +208,9 @@ exports.updateRecord = function (table, recordId, value) {
 
                     return {
                         success: success,
-                        id: recordId,
                         status: value.status,
-                        error: error
+                        error: error,
+                        id: recordId
                     };
                 });
             });

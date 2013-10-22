@@ -14,5 +14,9 @@
     "Services"
   ],
   "author": "Cam Stevenson",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies" : {
+    "q" : ">=0.9.7",
+    "q-io" : ">=1.10.2"
+  }
 }
