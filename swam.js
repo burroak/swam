@@ -67,7 +67,7 @@ exports.getRecords = function (table, filter, select, orderby, skip, top, includ
     }
 
     if (orderby !== null && orderby !== undefined) {
-        url = exports._addQueryParam(url, "orderby", orderby);
+        url = exports._addQueryParam(url, "$orderby", orderby);
     }
 
     if (skip !== null && skip !== undefined) {
